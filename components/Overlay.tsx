@@ -46,21 +46,21 @@ export default function Overlay() {
                 {/* Credentials List - The "Wow" Factor */}
                 <motion.div variants={item} className="mb-16 space-y-8">
                     <CredentialItem
+                        icon={<Globe className="text-purple-400" size={32} />}
+                        title="GOOGLE / MANDIANT"
+                        subtitle="THREAT HUNTING PROGRAM DEVELOPMENT"
+                        years="2018 - PRESENT"
+                    />
+                    <CredentialItem
                         icon={<Shield className="text-cyan-400" size={32} />}
                         title="UK INTELLIGENCE"
                         subtitle="CYBER DEFENSE OPERATIONS"
                         years="10 YEARS"
                     />
                     <CredentialItem
-                        icon={<Globe className="text-purple-400" size={32} />}
-                        title="GOOGLE / MANDIANT"
-                        subtitle="THREAT HUNTING PROGRAM DEVELOPMENT"
-                        years="PRESENT"
-                    />
-                    <CredentialItem
                         icon={<Cpu className="text-emerald-400" size={32} />}
                         title="STRATEGIC ARCHITECTURE"
-                        subtitle="NATIONAL LEVEL DEFENSE SYSTEMS"
+                        subtitle="CYBER DEFENSE STRATEGY & OPS"
                         years="EXPERT"
                     />
                 </motion.div>

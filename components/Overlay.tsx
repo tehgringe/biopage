@@ -49,7 +49,7 @@ export default function Overlay() {
                         icon={<Globe className="text-purple-400" size={32} />}
                         title="GOOGLE / MANDIANT"
                         subtitle="THREAT HUNTING PROGRAM DEVELOPMENT"
-                        years="2018 - PRESENT"
+                        years="SINCE 2018"
                     />
                     <CredentialItem
                         icon={<Shield className="text-cyan-400" size={32} />}

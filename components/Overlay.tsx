@@ -33,7 +33,7 @@ export default function Overlay() {
                 {/* Name */}
                 <motion.h1
                     variants={item}
-                    className="mb-2 font-mono text-6xl font-black uppercase tracking-tighter text-white md:text-8xl drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]"
+                    className="mb-6 font-mono text-6xl font-black uppercase tracking-tighter text-white md:text-8xl drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]"
                 >
                     Gareth Grindal
                 </motion.h1>
@@ -61,7 +61,7 @@ export default function Overlay() {
                         icon={<Cpu className="text-emerald-400" size={32} />}
                         title="STRATEGIC ARCHITECTURE"
                         subtitle="CYBER DEFENSE STRATEGY & OPS"
-                        years="EXPERT"
+                        years="LEADERSHIP"
                     />
                 </motion.div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Twitter, Linkedin, Mail, Terminal, Shield, Lock } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail, Terminal, Shield, Globe, Cpu } from "lucide-react";
 
 const container = {
     hidden: { opacity: 0 },
@@ -15,7 +15,7 @@ const container = {
 };
 
 const item = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, x: -50 },
     show: { opacity: 1, x: 0 },
 };
 
@@ -26,34 +26,47 @@ export default function Overlay() {
                 variants={container}
                 initial="hidden"
                 animate="show"
-                className="pointer-events-auto max-w-3xl border-l-4 border-cyan-500 bg-black/60 p-8 backdrop-blur-sm md:p-12"
+                className="pointer-events-auto max-w-4xl"
             >
-                <motion.div variants={item} className="mb-2 flex items-center gap-2 text-cyan-400">
-                    <Terminal size={20} />
-                    <span className="font-mono text-sm tracking-widest">SYSTEM_READY</span>
-                </motion.div>
+                {/* Header / Status - REMOVED */}
 
+                {/* Name */}
                 <motion.h1
                     variants={item}
-                    className="mb-2 font-mono text-5xl font-bold uppercase tracking-tighter text-white md:text-7xl"
+                    className="mb-2 font-mono text-6xl font-black uppercase tracking-tighter text-white md:text-8xl drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]"
                 >
                     Gareth Grindal
                 </motion.h1>
 
-                <motion.h2 variants={item} className="mb-8 font-mono text-xl text-cyan-400 md:text-2xl">
-                    [ Cybersecurity Professional ]
+                {/* Role */}
+                <motion.h2 variants={item} className="mb-12 font-mono text-2xl text-cyan-300 md:text-3xl tracking-widest">
+                    // NATIONAL THREAT HUNTING & STRATEGY
                 </motion.h2>
 
-                <motion.div variants={item} className="mb-10 max-w-xl space-y-4 text-gray-300 font-mono">
-                    <p className="leading-relaxed">
-                        <span className="text-cyan-500">{">"}</span> Securing digital frontiers with nearly two decades of operational experience.
-                    </p>
-                    <p className="leading-relaxed">
-                        <span className="text-cyan-500">{">"}</span> Specializing in threat intelligence, network defense, and strategic security architecture.
-                    </p>
+                {/* Credentials List - The "Wow" Factor */}
+                <motion.div variants={item} className="mb-16 space-y-8">
+                    <CredentialItem
+                        icon={<Shield className="text-cyan-400" size={32} />}
+                        title="UK INTELLIGENCE"
+                        subtitle="CYBER DEFENSE OPERATIONS"
+                        years="10 YEARS"
+                    />
+                    <CredentialItem
+                        icon={<Globe className="text-purple-400" size={32} />}
+                        title="GOOGLE / MANDIANT"
+                        subtitle="THREAT HUNTING PROGRAM DEVELOPMENT"
+                        years="PRESENT"
+                    />
+                    <CredentialItem
+                        icon={<Cpu className="text-emerald-400" size={32} />}
+                        title="STRATEGIC ARCHITECTURE"
+                        subtitle="NATIONAL LEVEL DEFENSE SYSTEMS"
+                        years="EXPERT"
+                    />
                 </motion.div>
 
-                <motion.div variants={item} className="flex gap-6">
+                {/* Socials */}
+                <motion.div variants={item} className="flex gap-8">
                     <SocialLink href="https://github.com" icon={<Github />} label="GitHub" />
                     <SocialLink href="https://twitter.com" icon={<Twitter />} label="Twitter" />
                     <SocialLink href="https://linkedin.com" icon={<Linkedin />} label="LinkedIn" />
@@ -61,18 +74,35 @@ export default function Overlay() {
                 </motion.div>
             </motion.div>
 
-            {/* Decorative HUD Elements */}
-            <div className="absolute top-8 left-8 text-cyan-500/50 font-mono text-xs">
-                ID: 8472-ALPHA
-                <br />
-                SECURE_CONNECTION: ESTABLISHED
+            {/* Decorative HUD Elements - Corners */}
+            <div className="absolute top-0 left-0 p-8 opacity-50">
+                <div className="h-32 w-1 bg-cyan-500/20"></div>
+                <div className="h-1 w-32 bg-cyan-500/20"></div>
             </div>
-            <div className="absolute bottom-8 right-8 text-cyan-500/50 font-mono text-xs text-right">
-                SYS_STATUS: NOMINAL
-                <br />
-                UPTIME: 99.99%
+            <div className="absolute bottom-0 right-0 p-8 opacity-50 rotate-180">
+                <div className="h-32 w-1 bg-cyan-500/20"></div>
+                <div className="h-1 w-32 bg-cyan-500/20"></div>
             </div>
         </main>
+    );
+}
+
+function CredentialItem({ icon, title, subtitle, years }: { icon: React.ReactNode, title: string, subtitle: string, years: string }) {
+    return (
+        <div className="group flex items-center gap-6 p-4 transition-all hover:bg-white/5 hover:pl-8 border-l-2 border-transparent hover:border-cyan-400">
+            <div className="opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all">
+                {icon}
+            </div>
+            <div>
+                <h3 className="font-mono text-3xl font-bold text-white tracking-tight group-hover:text-cyan-300 transition-colors">
+                    {title}
+                </h3>
+                <div className="flex items-center gap-4 text-gray-400 font-mono text-sm">
+                    <span className="text-cyan-500/80">[{years}]</span>
+                    <span>{subtitle}</span>
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -82,13 +112,10 @@ function SocialLink({ href, icon, label }: { href: string; icon: React.ReactNode
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative flex h-12 w-12 items-center justify-center border border-cyan-500/30 bg-black/50 text-cyan-500 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
+            className="text-gray-400 hover:text-cyan-400 transition-colors hover:scale-110"
             aria-label={label}
         >
-            <span className="h-5 w-5 transition-transform group-hover:scale-110">{icon}</span>
-            {/* Corner accents */}
-            <span className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-cyan-500 opacity-0 transition-opacity group-hover:opacity-100" />
-            <span className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-cyan-500 opacity-0 transition-opacity group-hover:opacity-100" />
+            <span className="h-8 w-8">{icon}</span>
         </a>
     );
 }

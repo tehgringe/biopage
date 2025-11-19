@@ -1,73 +1,91 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { PerspectiveCamera, Grid, Environment } from "@react-three/drei";
+import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import * as THREE from "three";
 
-function MovingGrid() {
-    const gridRef = useRef<THREE.Mesh>(null);
+function DigitalGlobe() {
+    const points = useMemo(() => {
+        const p = new Float32Array(3000 * 3);
+        for (let i = 0; i < 3000; i++) {
+            const theta = THREE.MathUtils.randFloatSpread(360);
+            const phi = THREE.MathUtils.randFloatSpread(360);
+
+            const x = 4 * Math.sin(theta) * Math.cos(phi);
+            const y = 4 * Math.sin(theta) * Math.sin(phi);
+            const z = 4 * Math.cos(theta);
+
+            p[i * 3] = x;
+            p[i * 3 + 1] = y;
+            p[i * 3 + 2] = z;
+        }
+        return p;
+    }, []);
+
+    const ref = useRef<THREE.Points>(null);
 
     useFrame((state) => {
-        if (gridRef.current) {
-            // Move the grid towards the camera to simulate forward movement
-            gridRef.current.position.z = (state.clock.getElapsedTime() * 5) % 10;
+        if (ref.current) {
+            ref.current.rotation.y = state.clock.getElapsedTime() * 0.1;
+            ref.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
         }
     });
 
     return (
-        <group>
-            {/* Main Grid */}
-            <Grid
-                ref={gridRef}
-                position={[0, -1, 0]}
-                args={[100, 100]} // Grid size
-                cellSize={2}
-                cellThickness={1}
-                cellColor="#00ffff"
-                sectionSize={10}
-                sectionThickness={1.5}
-                sectionColor="#00ffff"
-                fadeDistance={50}
-                fadeStrength={1.5}
-                infiniteGrid
+        <points ref={ref} position={[6, 0, -5]}>
+            <bufferGeometry>
+                <bufferAttribute
+                    attach="attributes-position"
+                    count={points.length / 3}
+                    array={points}
+                    itemSize={3}
+                    args={[points, 3]}
+                />
+            </bufferGeometry>
+            <pointsMaterial
+                size={0.05}
+                color="#00ffff"
+                transparent
+                opacity={0.6}
+                sizeAttenuation
             />
-            {/* Floor Reflection/Glow */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.1, 0]}>
-                <planeGeometry args={[100, 100]} />
-                <meshBasicMaterial color="#000000" />
-            </mesh>
-        </group>
+        </points>
     );
 }
 
-function Background() {
-    return (
-        <color attach="background" args={["#050505"]} />
-    );
+function CameraController() {
+    useFrame((state) => {
+        // Subtle camera orbit
+        const t = state.clock.getElapsedTime();
+        state.camera.position.x = Math.sin(t * 0.1) * 2;
+        state.camera.lookAt(0, 0, -10);
+    });
+    return null;
 }
 
 export default function Scene() {
     return (
         <div className="fixed inset-0 z-0">
             <Canvas gl={{ antialias: false }}>
-                <Background />
-                <fog attach="fog" args={["#050505", 5, 30]} />
+                <color attach="background" args={["#050505"]} />
+                <fog attach="fog" args={["#050505", 5, 40]} />
 
-                <PerspectiveCamera makeDefault position={[0, 2, 10]} fov={75} />
+                <PerspectiveCamera makeDefault position={[0, 1, 8]} fov={60} />
+                <CameraController />
 
-                <MovingGrid />
+                <DigitalGlobe />
 
                 <ambientLight intensity={0.2} />
+                <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
 
-                {/* Post Processing for the Neon Glow */}
                 <EffectComposer>
                     <Bloom
                         luminanceThreshold={0}
                         mipmapBlur
-                        intensity={1.5}
-                        radius={0.6}
+                        intensity={1.2}
+                        radius={0.5}
                     />
                 </EffectComposer>
             </Canvas>
